@@ -1,1 +1,55 @@
-Jeopardy Argento
+<!doctype html>
+
+<html ng-app>
+<head>
+    <title>JEOPARDY argento</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
+    <script src="js/jlearn.js"></script>
+    <script src="js/decks/hiragana.js"></script>
+    <script src="js/decks/katakana.js"></script>
+    <script src="js/decks/hangul.js"></script>
+    <script src="js/decks/capitals.js"></script>
+    <script src="js/decks/basic_french.js"></script>
+    <script src="js/decks/basic_english.js"></script>
+
+    <link rel="stylesheet" href="css/main.css" type="text/css" charset="utf-8"/>
+</head>
+<body>
+    <div ng-controller="CardCtrl" ng-cloak>
+        <img src="http://i.imgur.com/PZRYI9D.png" alt="Jeopardy Argento"><br/>
+<p>Todas las preguntas que tienen que ver con Argentina de los últimos 30 años del programa norteamericano.<br>Fuente: <a href="http://www.j-archive.com/">J! Archive</a> y <a href="https://github.com/Youpinadi/jlearn">JLearn</a>.</p>
+        <h3>Escribí tu respuesta o apreta la barra para conocer la respuesta</h3>
+            <div> 
+        <label>random order <input type="checkbox" ng-model="random"/></label></div>
+
+
+        <div id="cards_container" ng-class="cardContainerClass()">
+            <div class="card box panel flip">
+                <div class="front">
+                    <span ng-show="!frontCard.isImage">{{ frontCard.source }}</span>
+                    <img ng-show="frontCard.isImage" src="{{ frontCard.source }}"/>
+                </div>
+                <div class="back">
+                    <span ng-show="!backCard.isImage">{{ backCard.source }}</span>
+                    <img ng-show="backCard.isImage" src="{{ backCard.source }}"/>
+                </div>
+            </div>
+            <div class="card box {{inputClass}}">
+                <input id="input" type="text" maxlength="{{currentCard.target.length}}" ng-change="check()" ng-model="input"/>
+                <div id="hint" ng-show="hint!=''">Hint: <span ng-bind-html-unsafe="hint"></span></div>
+            </div>
+        </div>
+
+        <div class="answer box" ng-class="answer.status">
+            <span ng-show="answer.status == 'success'">You were right!</span>
+            <span ng-show="answer.status == 'error'">You were wrong!</span>
+            <span ng-show="answer.status == 'learn'">Learning mode:</span>
+            Answer for <b>{{answer.card.source}}</b> was: <b>{{answer.card.target}}</b>
+            <div class="consecutive" ng-show="consecutiveGoodAnswers > 3">{{consecutiveGoodAnswers}} good consecutive answers!</div>
+            <div ng-show="answer.status != 'success'">Time to type what you've just learnt!</div>
+        </div>
+        </div>
+</body>
+</html>
